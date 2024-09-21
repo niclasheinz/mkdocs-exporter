@@ -5,6 +5,7 @@ hide:
 
 # Getting started
 
+
 ## Introduction
 
 [MkDocs Exporter](/) is a plugin for [MkDocs](https://www.mkdocs.org/), it allows you to export your documentation to various formats such as PDF. If you're familiar with Python, you can install the plugin with `pip` (or your favourite package manager).
