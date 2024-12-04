@@ -1,5 +1,5 @@
 # MkDocs Exporter
-
+ 
 <div>
   <a href="https://pypi.org/project/mkdocs-exporter">
     <img src="https://img.shields.io/pypi/v/mkdocs-exporter?color=blue">
