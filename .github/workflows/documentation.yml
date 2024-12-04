@@ -6,61 +6,40 @@ on:
     branches:
       - master
 
-env:
-  PYTHON_VERSION: '3.12'
-
-concurrency:
-  group: documentation
-  cancel-in-progress: false
-
 jobs:
   build:
-    name: Build
+    name: Build Documentation
     runs-on: ubuntu-latest
     steps:
+      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Set up Poetry
-        run: |
-          pipx install poetry
+
+      # Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
-          cache: poetry
-      - name: Set up Poetry environment
-        env:
-          PYTHON_VERSION: ${{ env.PYTHON_VERSION }}
+          python-version: '3.12'
+
+      # Install dependencies
+      - name: Install dependencies
         run: |
-          poetry env use ${PYTHON_VERSION}
-      - name: Install Python dependencies
+          pip install mkdocs mkdocs-material
+
+      # Build the documentation
+      - name: Build MkDocs site
         run: |
-          pip install poetry
-          make install
-      - name: Get Playwright version
-        run: |
-          echo "PLAYWRIGHT_VERSION=$(poetry run playwright --version | cut -d ' ' -f 2)" >> $GITHUB_ENV
-      - id: playwright
-        name: Cache playwright binaries
-        uses: actions/cache@v4
+          mkdocs build
+
+      # Upload built site as artifact
+      - name: Upload documentation artifact
+        uses: actions/upload-artifact@v4
         with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ env.PLAYWRIGHT_VERSION }}
-      - name: Set up Playwright
-        if: steps.playwright.outputs.cache-hit != 'true'
-        run: |
-          make browser
-      - name: Build documentation
-        run: |
-          make build
-      - name: Upload pages artifacts
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
+          name: site
+          path: site/
+
   deploy:
-    name: Deploy
+    name: Deploy Documentation
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -68,8 +47,7 @@ jobs:
       id-token: write
     steps:
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: site/
