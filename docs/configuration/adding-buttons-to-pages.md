@@ -46,7 +46,7 @@ from mkdocs_exporter.page import Page
 
 def href(page: Page, **kwargs) -> str:
   """The button's 'href' attribute."""
-
+ 
   return 'https://google.com/search?' + urlencode({'q': page.title})
 ```
 
