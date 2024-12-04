@@ -17,7 +17,7 @@
 <a href="https://adrienbrignon.github.io/mkdocs-exporter/getting-started/">
   <img src="https://github.com/adrienbrignon/mkdocs-exporter/assets/10183277/85c768f6-fe27-43a1-998c-ac89e926cba1" align="right" width="350">
 </a>
-<br />
+<br /> 
 
 A highly configurable plugin for [*MkDocs*](https://github.com/mkdocs/mkdocs) that exports your pages as PDF documents.  
 Additionally, it can combine your entire documentation into a single PDF file.
